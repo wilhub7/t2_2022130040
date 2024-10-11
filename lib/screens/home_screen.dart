@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:t2_2022130040/providers/task_provider.dart';
@@ -12,6 +13,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {},
@@ -26,25 +28,27 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(65),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             color: Colors.white,
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      '25',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        '25',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'tasks',
-                      style: TextStyle(fontSize: 15),
-                    )
-                  ],
+                      Text(
+                        'tasks',
+                        style: TextStyle(fontSize: 15),
+                      )
+                    ],
+                  ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -67,20 +71,22 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    Text(
-                      '72 %',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        '72 %',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'progress',
-                      style: TextStyle(fontSize: 15),
-                    )
-                  ],
+                      Text(
+                        'progress',
+                        style: TextStyle(fontSize: 15),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -118,37 +124,49 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: Consumer<TaskProvider>(
               builder: (context, value, child) {
-                if (value.tasks.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      style: TextStyle(fontSize: 50),
-                      'My Tasks',
-                    ),
-                  );
-                }
                 return ListView.builder(
                   itemCount: value.tasks.length,
                   itemBuilder: (context, index) {
                     final task = value.tasks[index];
 
                     return Card(
-                      margin: EdgeInsets.all(40),
-                      color: Colors.blue,
+                      margin: EdgeInsets.all(10),
+                      color: const Color.fromRGBO(255, 255, 255, .1),
                       child: ListTile(
-                        // leading: CircularPercentIndicator(
-                        //   radius: 10,
-                        //   progressColor: Colors.purple,
-                        // ),
+                        // contentPadding: EdgeInsets.all(8),
                         title: Text(
                           task.name,
                           style: TextStyle(color: Colors.white),
                         ),
-                        // subtitle: Text(task.email),
-                        leading: CircleAvatar(
+                        subtitle: Row(
+                          children: [
+                            Text(
+                              DateFormat('MMMM, dd').format(task.date),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              '${task.start.format(context)}',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            // Text(
+                            //   '${task.end.format(context)}',
+                            //   style: TextStyle(color: Colors.white),
+                            // )
+                          ],
+                        ),
+                        leading: Container(
                           child: CircularPercentIndicator(
-                            radius: 10,
+                            radius: 20,
                             progressColor: Colors.purple,
-                            center: Text('75 %'),
+                            center: Text(
+                              '75 %',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            percent: 0.75,
+                            backgroundColor: Colors.grey,
                           ),
                         ),
                         trailing: IconButton(
